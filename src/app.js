@@ -9,7 +9,7 @@ const host = 'http://localhost:3000'
 
 export default class App extends Component {
   state = {
-    notes: [],
+    notes: {},
   }
 
   componentDidMount = () => {
@@ -17,19 +17,32 @@ export default class App extends Component {
     this.socket.on('connect', () => {
       console.log('Connected')
     })
+    this.socket.on('notes', data => this.update(data))
+
     return fetch(`${host}/notes`)
       .then(result => result.json())
-      .then(notes => this.setState({ ...this.state.notes, ...notes }))
+      .then(data => this.update(data))
   }
 
-  onNote = (note) => fetch(`${host}/notes`, {
-    method: 'POST',
-    body: JSON.stringify({ [note]: true }),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-  .catch(error => this.setState({ error }))
+  onNote = (note) => {
+    const options = {
+      method: 'POST',
+      body: JSON.stringify({ [note]: !this.state.notes[note] }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+    return fetch(`${host}/notes`, options)
+      .then(result => result.json())
+      .then(notes => this.setState({ notes }))
+      .catch(error => this.setState({ error }))
+  }
+
+  update = (data) => {
+    // Save to data store
+    const notes = { ...this.state.notes, ...data };
+    return this.setState({ notes });
+  }
 
   render() {
     const { notes, error } = this.state
@@ -42,15 +55,12 @@ export default class App extends Component {
         <div>
           <ul>
             {NOTES.map(note =>
-              <li key={note} onClick={() => this.onNote(note)}>{note}</li>
-            )}
-          </ul>
-        </div>
-        <h1>Selected</h1>
-        <div>
-          <ul>
-            {notes.map(note =>
-              <li key={note} onClick={() => this.onNote(note)}>{note}</li>
+              <li
+                key={note}
+                onClick={() => this.onNote(note)}
+              >
+                {note} : {notes[note] ? 'On' : 'Off'}
+              </li>
             )}
           </ul>
         </div>
