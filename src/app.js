@@ -57,6 +57,7 @@ export default class App extends Component {
             {NOTES.map(note =>
               <li
                 key={note}
+                style={{ color: notes[note] ? 'green' : 'red', cursor: 'pointer' }}
                 onClick={() => this.onNote(note)}
               >
                 {note} : {notes[note] ? 'On' : 'Off'}
