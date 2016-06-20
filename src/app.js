@@ -7,9 +7,16 @@ import NOTES from './notes.js'
 
 const host = 'http://localhost:3000'
 
+const Ball = (props) => {
+  return (
+    <h1 style={{ color: 'white' }}>Hello</h1>
+  )
+}
+
 export default class App extends Component {
   state = {
     notes: {},
+    balls: [...Array(6).keys()],
   }
 
   componentDidMount = () => {
@@ -40,32 +47,41 @@ export default class App extends Component {
 
   update = (data) => {
     // Save to data store
-    const notes = { ...this.state.notes, ...data };
-    return this.setState({ notes });
+    const notes = { ...this.state.notes, ...data }
+    return this.setState({ notes })
   }
 
   render() {
-    const { notes, error } = this.state
-
-    if (error) console.log(error)
-
     return (
-      <div className="container">
-        <h1>All</h1>
-        <div>
-          <ul>
-            {NOTES.map(note =>
-              <li
-                key={note}
-                style={{ color: notes[note] ? 'green' : 'red', cursor: 'pointer' }}
-                onClick={() => this.onNote(note)}
-              >
-                {note} : {notes[note] ? 'On' : 'Off'}
-              </li>
-            )}
-          </ul>
+      <div style={styles.container}>
+        <div style={styles.content}>
+          {this.state.balls.map(ball =>
+            <Ball key={ball} />
+          )}
         </div>
       </div>
     )
   }
+}
+
+const styles = {
+  container: {
+    backgroundColor: 'black',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    // display: 'flex',
+    // flex: 1,
+  },
+  content: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 }
