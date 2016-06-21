@@ -115,7 +115,9 @@ export default class App extends Component {
   }
 
   componentDidMount = () => {
-    this.socket = io.connect(host)
+    this.socket = io.connect(host, {
+      transports: ['websocket', 'polling'],
+    })
     this.socket.on('connect', () => {
       console.log('Connected')
     })
