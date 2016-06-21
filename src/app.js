@@ -8,7 +8,7 @@ import io from 'socket.io-client'
 
 // import NOTES from './notes.js'
 
-const host = 'http://localhost:3000'
+const host = 'http://luces-api.lopezjuri.com'
 
 const COLORS = {
   BLACK: '#262626',
