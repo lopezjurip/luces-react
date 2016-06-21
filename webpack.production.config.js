@@ -8,6 +8,7 @@ module.exports = {
   devtool: false,
   entry: [
     'babel-polyfill',
+    'whatwg-fetch',
     './src/index.js',
   ],
   output: {
@@ -23,6 +24,7 @@ module.exports = {
     new CopyWebpackPlugin([
       { from: 'assets', to: 'assets' },
       { from: 'index.production.html', to: 'index.html' },
+      { from: 'luces.appcache', to: 'luces.appcache' },
     ]),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.DedupePlugin(),

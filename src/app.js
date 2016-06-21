@@ -79,14 +79,16 @@ class Ball extends Component {
 
     // <div onMouseDown={onSelect} onTouchStart={onSelect} onMouseUp={this.onDeselect} onTouchEnd={this.onDeselect} {...props}>
     return (
-      <div onMouseDown={onSelect} onTouchStart={onSelect} {...props}>
-        <MorphReplace width={100} height={100} duration={200}>
-          {note ? <Note key="checked" /> : <Circle key="checkbox" />}
-        </MorphReplace>
+      <div {...props}>
+        <div onMouseDown={onSelect} onTouchStart={onSelect} {...props}>
+          <MorphReplace width={100} height={100} duration={200}>
+            {note ? <Note key="checked" /> : <Circle key="checkbox" />}
+          </MorphReplace>
+        </div>
 
         {renderIf(note)(() =>
           <Sound
-            url={`../assets/${note.trim().toUpperCase().replace('#', 's')}.mp3`}
+            url={`/assets/${note.trim().toUpperCase().replace('#', 's')}.mp3`}
             playStatus={Sound.status.PLAYING}
           />
         )}

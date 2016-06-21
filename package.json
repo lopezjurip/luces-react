@@ -17,7 +17,8 @@
     "react-svg-morph": "^0.1.9",
     "render-if": "^0.1.1",
     "socket.io-client": "^1.4.6",
-    "soundmanager2": "^2.97.20150601-a"
+    "soundmanager2": "^2.97.20150601-a",
+    "whatwg-fetch": "^1.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.9.1",
