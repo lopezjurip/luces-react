@@ -5,3 +5,6 @@ CACHE MANIFEST
 /assets/E1.mp3
 /assets/F1.mp3
 /assets/G1.mp3
+
+NETWORK:
+bundle.js
