@@ -1,7 +1,9 @@
 /* eslint no-console:0 */
 
 import React, { Component } from 'react'
-import { MorphReplaceResize } from 'react-svg-morph';
+import { MorphReplace } from 'react-svg-morph';
+import Sound from 'react-sound';
+import renderIf from 'render-if';
 import io from 'socket.io-client'
 
 // import NOTES from './notes.js'
@@ -50,20 +52,37 @@ class Circle extends Component {
   }
 }
 
-const Ball = ({ ball, ...props }) => {
+const Ball = ({ note, ...props }) => {
   return (
     <div {...props}>
-      <MorphReplaceResize width={100} height={100}>
-        {ball ? <Note key="checked" /> : <Circle key="checkbox" />}
-      </MorphReplaceResize>
+      <MorphReplace width={100} height={100} duration={200}>
+        {note ? <Note key="checked" /> : <Circle key="checkbox" />}
+      </MorphReplace>
+
+      {renderIf(note)(() =>
+        <Sound
+          url={`../assets/${note.trim().toUpperCase().replace('#', 's')}.mp3`}
+          playStatus={Sound.status.PLAYING}
+        />
+      )}
+
     </div>
   )
 }
 
+const NOTES = [
+  'c1',
+  'd1',
+  'e1',
+  'f1',
+  'g1',
+  'a1',
+]
+
 export default class App extends Component {
   state = {
     notes: {},
-    balls: [...Array(6).keys()].map(() => false),
+    selected: NOTES.map(() => false),
   }
 
   componentDidMount = () => {
@@ -88,14 +107,14 @@ export default class App extends Component {
     }
     return fetch(`${host}/notes`, options)
       .then(result => result.json())
-      .then(notes => this.setState({ notes }))
+      .then(notes => this.setState({ notes, error: null }))
       .catch(error => this.setState({ error }))
   }
 
-  onMouseDown = (index, isDown) => {
-    const balls = [...this.state.balls];
-    balls[index] = isDown;
-    this.setState({ balls });
+  onMouseDown = (note, isDown) => {
+    const notes = { ...this.state.notes }
+    notes[note] = isDown
+    this.setState({ notes });
   }
 
   update = (data) => {
@@ -105,20 +124,31 @@ export default class App extends Component {
   }
 
   render() {
+    const { notes, error } = this.state
+
+    // const scale = notes.reduce((previous, current) => {
+    //   const note = current.trim().toUpperCase().replace('#', 's');
+    // }, [])
+
     return (
       <div style={styles.container}>
         <div style={styles.content}>
-          {this.state.balls.map((ball, i) =>
+          {NOTES.map((note, i) =>
             <Ball
               key={i}
-              ball={ball}
-              onMouseDown={() => this.onMouseDown(i, true)}
-              onMouseUp={() => this.onMouseDown(i, false)}
-              onTouchStart={() => this.onMouseDown(i, true)}
-              onTouchEnd={() => this.onMouseDown(i, false)}
+              note={notes[note] ? note : null}
+              onMouseDown={() => this.onMouseDown(note, true)}
+              onMouseUp={() => this.onMouseDown(note, false)}
+              onTouchStart={() => this.onMouseDown(note, true)}
+              onTouchEnd={() => this.onMouseDown(note, false)}
             />
           )}
         </div>
+        {renderIf(error)(() =>
+          <div style={styles.error}>
+            <p style={{ color: COLORS.GRAY }}>{error.message}</p>
+          </div>
+        )}
       </div>
     )
   }
@@ -144,5 +174,11 @@ const styles = {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  error: {
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+    marginRight: 15,
   },
 }

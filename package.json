@@ -9,8 +9,11 @@
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
     "react-motion": "^0.4.4",
+    "react-sound": "^0.4.0",
     "react-svg-morph": "^0.1.9",
-    "socket.io-client": "^1.4.6"
+    "render-if": "^0.1.1",
+    "socket.io-client": "^1.4.6",
+    "soundmanager2": "^2.97.20150601-a"
   },
   "devDependencies": {
     "babel-core": "^6.9.1",
