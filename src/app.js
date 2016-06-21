@@ -5,6 +5,7 @@ import { MorphReplace } from 'react-svg-morph';
 import Sound from 'react-sound';
 import renderIf from 'render-if';
 import io from 'socket.io-client'
+import Prefixer from 'inline-style-prefixer'
 
 // import NOTES from './notes.js'
 
@@ -178,7 +179,8 @@ export default class App extends Component {
   }
 }
 
-const styles = {
+const prefixer = new Prefixer()
+const styles = prefixer.prefix({
   container: {
     backgroundColor: COLORS.BLACK,
     position: 'absolute',
@@ -205,4 +207,4 @@ const styles = {
     bottom: 0,
     marginRight: 15,
   },
-}
+})
