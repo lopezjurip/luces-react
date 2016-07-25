@@ -1,5 +1,7 @@
 # Luces React
 
+![preview](./media/preview.png)
+
 ## Development
 
 Clone this repository:

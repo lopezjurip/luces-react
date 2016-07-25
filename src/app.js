@@ -78,7 +78,6 @@ class Ball extends Component {
   render() {
     const { note, onSelect, ...props } = this.props;
 
-    // <div onMouseDown={onSelect} onTouchStart={onSelect} onMouseUp={this.onDeselect} onTouchEnd={this.onDeselect} {...props}>
     return (
       <div {...props}>
         <div onMouseDown={onSelect} onTouchStart={onSelect} {...props}>
@@ -122,10 +121,6 @@ export default class App extends Component {
       console.log('Connected')
     })
     this.socket.on('notes', data => this.update(data))
-
-    // return fetch(`${host}/notes`)
-    //   .then(result => result.json())
-    //   .then(data => this.update(data))
   }
 
   onNote = (note, toggle = true) => {
@@ -137,8 +132,6 @@ export default class App extends Component {
       },
     }
     return fetch(`${host}/notes`, options)
-      // .then(result => result.json())
-      // .then(notes => this.setState({ notes, error: null }))
       .catch(error => this.setState({ error }))
   }
 
@@ -151,7 +144,6 @@ export default class App extends Component {
 
   update = (data) => {
     // Save to data store
-    // console.log('Event data:', data);
     const notes = { ...this.state.notes, ...data }
     return this.setState({ notes })
   }
@@ -193,8 +185,6 @@ const styles = prefixer.prefix({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    // display: 'flex',
-    // flex: 1,
   },
   content: {
     display: 'flex',
